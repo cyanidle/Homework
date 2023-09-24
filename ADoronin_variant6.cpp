@@ -33,6 +33,8 @@ struct Desctiption {
 
     template<typename Func>
     void operator<<(Func&& func) {
+        static_assert(std::is_same<std::result_of_t<Func()>, TaskStatus>::value, 
+            "Function must return TaskStatus");
         std::cout << "=======\n";
 start:
         std::cout << desc << std::endl;
