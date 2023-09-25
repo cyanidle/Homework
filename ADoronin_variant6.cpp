@@ -66,7 +66,7 @@ TaskStatus DZ_2()
 
 TaskStatus DZ_3()
 {
-    auto subtask_A = []{
+    Desctiption{"Подзадание A"} << []{
         auto A = get_input<int>("A");
         auto B = get_input<int>("B");
         auto C = get_input<int>("C");
@@ -81,7 +81,7 @@ TaskStatus DZ_3()
         print("Результат", answer);
         return TaskOk;
     };
-    auto subtask_B = []{
+    Desctiption{"Подзадание B"} << []{
         auto N = get_input<int>("Номер месяца");
         switch (N)
         {
@@ -103,7 +103,7 @@ TaskStatus DZ_3()
         }
         return TaskOk;
     };
-    auto subtask_C = []{
+    Desctiption{"Подзадание C"} << []{
         auto x = get_input<int>("Number [1/-1]");
         if (x == 1) {
             print("Positive number");
@@ -115,15 +115,12 @@ TaskStatus DZ_3()
         }
         return TaskOk;
     };
-    Desctiption{"Подзадание A"} << subtask_A;
-    Desctiption{"Подзадание B"} << subtask_B;
-    Desctiption{"Подзадание C"} << subtask_C;
     return TaskOk;
 }
 
 TaskStatus DZ_4()
 {
-    auto subtask_A = []{
+    Desctiption{"Подзадание A"} << []{
         std::vector<int> numbers;
         auto len = get_input<uint16_t>("Количество чисел.");
         std::cout << "Введите " << len << " чисел через пробел или с новой строки" << std::endl;
@@ -161,7 +158,7 @@ TaskStatus DZ_4()
         return TaskOk;
 
     };
-    auto subtask_B = []{
+    Desctiption{"Подзадание B"} << []{
         auto N = get_input<uint32_t>("Число");
         uint32_t aggr = 0;
         bool start = true;
@@ -178,8 +175,6 @@ TaskStatus DZ_4()
         print("Произведение цифр", aggr);
         return TaskOk;
     };  
-    Desctiption{"Подзадание A"} << subtask_A;
-    Desctiption{"Подзадание B"} << subtask_B;
     return TaskOk;
 }
 
@@ -188,6 +183,7 @@ auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4};
 
 int main()
 {
+    setlocale(LC_ALL, "Rus");
     uint16_t task;
     std::cout << "Введите номер домашнего задания [1 - " << tasks.size() << "]: ";
     std::cin >> task;
