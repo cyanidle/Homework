@@ -12,11 +12,10 @@ bool isPrime(long int n)
 }
 
 template<typename T, typename Call>
-void forEachDigit(size_t num, Call call)
+void forEachDigit(T num, Call call)
 {
     while(num) {
-        auto digit = num % 10;
-        call(digit);
+        call(num % 10);
         num /= 10;
     }
 }

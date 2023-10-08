@@ -43,9 +43,12 @@ void b()
     print_array(array, count);
 }
 
+
+
 }
 
 void DZ_5()
 {
     Desctiption{"А"} << subtasks_5::a;
+    Desctiption{"Б"} << subtasks_5::b;
 }

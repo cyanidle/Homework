@@ -8,5 +8,4 @@ void DZ_2()
     uint32_t bitMask = 1u << (i - 1);
     std::cout << i;
     print("-ый бит числа: ", (number & bitMask) ? 1 : 0);
-    return TaskOk;
 }
