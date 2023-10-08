@@ -7,7 +7,7 @@ namespace subtasks_5
 
 void a()
 {
-    unsigned array[10'001];
+    unsigned array[10'000];
     auto count = populate_array(array);
     bool has_prime = std::any_of(array, array + count, isPrime);
     if (!has_prime) {
@@ -18,7 +18,7 @@ void a()
 
 void b()
 {
-    unsigned array[1'001];
+    unsigned array[1'000];
     auto count = populate_array(array);
     auto predicate = [](unsigned lhs, unsigned rhs){
         auto lSum = digitsSum(lhs);
@@ -42,10 +42,10 @@ void b()
 
 void c()
 {
-    auto n = get_input<uint16_t>("n", ValidateRange<uint16_t, 1, 100>{});
-    auto m = get_input<uint16_t>("m", ValidateRange<uint16_t, 1, 100>{});
+    auto n = get_input<uint16_t>(L"n", ValidateRange<uint16_t, 1, 100>{});
+    auto m = get_input<uint16_t>(L"m", ValidateRange<uint16_t, 1, 100>{});
     int mat[101][101];
-    std::cout << "Далее необходимо будет ввести строки матрицы." << std::endl;
+    std::wcout << L"Далее необходимо будет ввести строки матрицы." << std::endl;
     auto maxRow = -1;
     auto maxMul = std::numeric_limits<int>::min();
     for (auto i = 0; i < n; ++i) {
@@ -106,8 +106,8 @@ void d()
 
 void DZ_5()
 {
-    Desctiption{"Подзадание A"} << subtasks_5::a;
-    Desctiption{"Подзадание B"} << subtasks_5::b;
-    Desctiption{"Подзадание C"} << subtasks_5::c;
-    Desctiption{"Подзадание D"} << subtasks_5::d;
+    Desctiption{L"Подзадание A"} << subtasks_5::a;
+    Desctiption{L"Подзадание B"} << subtasks_5::b;
+    Desctiption{L"Подзадание C"} << subtasks_5::c;
+    Desctiption{L"Подзадание D"} << subtasks_5::d;
 }
