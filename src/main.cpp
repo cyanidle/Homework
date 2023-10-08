@@ -6,12 +6,12 @@
 #include "dz5.hpp"
 #include "dz6.hpp"
 
-using Task = TaskStatus(*)(void);
+using Task = void(*)(void);
 auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4, DZ_5, DZ_6};
 
 int main()
 {
-    setlocale(LC_ALL, "Russian");
+    setlocale(LC_ALL, "Rus");
     uint16_t task;
     std::cout << "Введите номер домашнего задания [1 - " << tasks.size() << "]: ";
     std::cin >> task;

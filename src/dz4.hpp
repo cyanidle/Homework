@@ -2,7 +2,7 @@
 #include "common.hpp"
 
 
-TaskStatus DZ_4()
+void DZ_4()
 {
     Desctiption{"Подзадание A"} << []{
         std::vector<int> numbers;
@@ -39,7 +39,6 @@ TaskStatus DZ_4()
             print("Маскимальное из этих чисел", max);
             print("Индекс этого числа", max_index);
         }
-        return TaskOk;
 
     };
     Desctiption{"Подзадание B"} << []{
@@ -57,7 +56,5 @@ TaskStatus DZ_4()
             N /= 10;
         }
         print("Произведение цифр", aggr);
-        return TaskOk;
-    };  
-    return TaskOk;
+    };
 }

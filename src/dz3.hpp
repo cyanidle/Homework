@@ -3,7 +3,7 @@
 #include "common.hpp"
 
 
-TaskStatus DZ_3()
+void DZ_3()
 {
     Desctiption{"Подзадание A"} << []{
         auto A = get_input<int>("A");
@@ -18,7 +18,6 @@ TaskStatus DZ_3()
             answer = A * B - C;
         }
         print("Результат", answer);
-        return TaskOk;
     };
     Desctiption{"Подзадание B"} << []{
         auto N = get_input<int>("Номер месяца");
@@ -36,11 +35,9 @@ TaskStatus DZ_3()
         case 9: print("Октябрь"); break;
         case 10: print("Ноябрь"); break;
         case 11: print("Декабрь"); break;
-        default: 
-            print("Введено неправильное число-месяц (Должно быть 0 <= N <= 11)");
-            return TaskFail;
+        default:
+            throw std::runtime_error("Введено неправильное число-месяц (Должно быть 0 <= N <= 11)");
         }
-        return TaskOk;
     };
     Desctiption{"Подзадание C"} << []{
         auto x = get_input<int>("Number [1/-1]");
@@ -50,9 +47,6 @@ TaskStatus DZ_3()
             print("Negative number");
         } else {
             print("Error");
-            return TaskFail;
         }
-        return TaskOk;
     };
-    return TaskOk;
 }

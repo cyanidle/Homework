@@ -1,7 +1,7 @@
 #pragma once
 #include "common.hpp"
 
-TaskStatus DZ_6()
+void DZ_6()
 {
-    return TaskOk;
+
 }
