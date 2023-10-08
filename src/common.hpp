@@ -10,13 +10,44 @@
 #include <string>
 #include <stdint.h>
 #include <stddef.h>
+#include <algorithm>
+#include <numeric>
+#include <string.h>
+#include <limits>
+
+#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
+
+template<typename T>
+void get_input(T& val, const char* query)
+{
+    std::cout << "Введите ['" << query << "'] ==> ";
+    std::cin >> val;
+    if (std::cin.bad()) {
+        throw std::runtime_error("Введено некорретное значение.");
+    }
+}
 
 template<typename T>
 T get_input(const char* query) {
     T value;
-    std::cout << "Введите ['" << query << "'] ==> ";
-    std::cin >> value;
+    get_input(value, query);
     return value;
+}
+
+template<typename T, typename Validate>
+T get_input(const char* query, Validate validate) {
+    auto value = get_input<T>(query);
+    validate(value);
+    return value;
+}
+
+template<typename T>
+inline void populate_array(T* arr, size_t size)
+{
+    std::cout << "Введите ['Элементов массива: ("<< size<<")'] ==> ";
+    for (size_t i = 0; i < size; ++i) {
+        std::cin >> arr[i];
+    }
 }
 
 template<typename T, size_t N>
@@ -27,10 +58,7 @@ size_t populate_array(T (&arr)[N])
         throw std::runtime_error(
             "Количество ["+std::to_string(count)+"] превышает максимальное ["+std::to_string(N)+']');
     }
-    std::cout << "Введите ['Элементы через пробел или новую строку'] ==> ";
-    for (unsigned i = 0; i < count; ++i) {
-        std::cin >> arr[i];
-    }
+    populate_array(arr, count);
     return count;
 }
 
@@ -53,21 +81,42 @@ void print_array(const T* arr, size_t size) {
     std::cout << "]" << std::endl;
 }
 
+template<typename Int, Int Min, Int Max>
+struct ValidateRange {
+    void operator()(Int i) const {
+        if (Min <= i && i <= Max) {
+            return;
+        } else {
+            throw std::runtime_error(
+                "Число выходит за диапазон: ["+std::to_string(Min)+" - "+std::to_string(Max)+']');
+        }
+    }
+};
+
 struct Desctiption {
     std::string desc;
 
     template<typename Func>
     void operator<<(Func&& func) {
-        std::cout << "=======\n";
-start:
+        std::cout << "=======" << std::endl;
         std::cout << desc << std::endl;
-        try {
-            func();
-        } catch (std::exception& exc) {
-            std::cout << "Условия задачи не соблюдены." << std::endl;
-            std::cout << exc.what() << std::endl;
-            std::cout << "Заново." << std::endl;
-            goto start;
+        std::cout << "Приступить? [Y/n]: " << std::flush;
+        std::cin.sync();
+        char ok;
+        std::cin >> ok;
+        if (ok != 'Y' && ok != 'y') {
+            return;
+        }
+        while (true) {
+            try {
+                func();
+                break;
+            } catch (std::exception& exc) {
+                std::cout << "Условия задачи не соблюдены. Причина: " << exc.what();
+                std::cout << "Заново." << std::endl;
+                std::cout << "=======" << std::endl;
+            }
         }
     }
+
 };

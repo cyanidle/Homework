@@ -1,6 +1,6 @@
 #pragma once
 #include "common.hpp"
-
+#include "predicates.hpp"
 
 void DZ_4()
 {
@@ -43,18 +43,6 @@ void DZ_4()
     };
     Desctiption{"Подзадание B"} << []{
         auto N = get_input<uint32_t>("Число");
-        uint32_t aggr = 0;
-        bool start = true;
-        while(N) {
-            auto digit = N % 10;
-            if (start) {
-                start = false;
-                aggr = digit;
-            } else {
-                aggr *= N % 10;
-            }
-            N /= 10;
-        }
-        print("Произведение цифр", aggr);
+        print("Произведение цифр", digitsMul(N));
     };
 }
