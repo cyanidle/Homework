@@ -4,13 +4,13 @@
 
 void DZ_4()
 {
-    Desctiption{L"Подзадание A"} << []{
+    Desctiption{"Подзадание A"} << []{
         std::vector<int> numbers;
-        auto len = get_input<uint16_t>(L"Количество чисел.");
-        std::wcout << L"Введите " << len << L" чисел через пробел или с новой строки" << std::endl;
+        auto len = get_input<uint16_t>("Количество чисел.");
+        std::cout << "Введите " << len << " чисел через пробел или с новой строки" << std::endl;
         numbers.resize(len);
         for (uint16_t i = 0; i < len; ++i) {
-            std::wcin >> numbers[i];
+            std::cin >> numbers[i];
         }
         int sum = 0;
         int max = 0;
@@ -33,16 +33,16 @@ void DZ_4()
             counter++;
         }
         if (max_index == -1) {
-            print(L"Нет ни одного отрицательного числа кратного 7");
+            print("Нет ни одного отрицательного числа кратного 7");
         } else {
-            print(L"Сумма отрицательных чисел, кратных 7", sum);
-            print(L"Маскимальное из этих чисел", max);
-            print(L"Индекс этого числа", max_index);
+            print("Сумма отрицательных чисел, кратных 7", sum);
+            print("Маскимальное из этих чисел", max);
+            print("Индекс этого числа", max_index);
         }
 
     };
-    Desctiption{L"Подзадание B"} << []{
-        auto N = get_input<uint32_t>(L"Число");
-        print(L"Произведение цифр", digitsMul(N));
+    Desctiption{"Подзадание B"} << []{
+        auto N = get_input<uint32_t>("Число");
+        print("Произведение цифр", digitsMul(N));
     };
 }

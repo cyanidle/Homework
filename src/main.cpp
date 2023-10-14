@@ -11,16 +11,16 @@ auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4, DZ_5, DZ_6};
 
 int main()
 {
-    std::locale::global(std::locale(L"ru_RU.utf8"));
+    std::locale::global(std::locale("ru_RU.cp1251"));
     uint16_t task;
-    std::wcout << L"Введите номер домашнего задания [1 - " << tasks.size() << L"]: ";
-    std::wcin >> task;
+    std::cout << "Введите номер домашнего задания [1 - " << tasks.size() << "]: ";
+    std::cin >> task;
     task -= 1;
     if (task < tasks.size()) {
-        Desctiption{"Домашнее задание: " + std::to_wstring(task + 1)}.Confirm(false) << tasks[task];
+        Desctiption{"Домашнее задание: " + std::to_string(task + 1)}.Confirm(false) << tasks[task];
         return 0;
     } else {
-        print(L"Такого домашнего задания нет");
+        print("Такого домашнего задания нет");
         return 1;
     }
 }

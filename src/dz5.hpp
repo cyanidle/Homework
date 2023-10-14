@@ -42,10 +42,10 @@ void b()
 
 void c()
 {
-    auto n = get_input<uint16_t>(L"n", ValidateRange<uint16_t, 1, 100>{});
-    auto m = get_input<uint16_t>(L"m", ValidateRange<uint16_t, 1, 100>{});
+    auto n = get_input<uint16_t>("n", ValidateRange<uint16_t, 1, 100>{});
+    auto m = get_input<uint16_t>("m", ValidateRange<uint16_t, 1, 100>{});
     int mat[101][101];
-    std::wcout << L"Далее необходимо будет ввести строки матрицы." << std::endl;
+    std::cout << "Далее необходимо будет ввести строки матрицы." << std::endl;
     auto maxRow = -1;
     auto maxMul = std::numeric_limits<int>::min();
     for (auto i = 0; i < n; ++i) {
@@ -106,8 +106,8 @@ void d()
 
 void DZ_5()
 {
-    Desctiption{L"Подзадание A"} << subtasks_5::a;
-    Desctiption{L"Подзадание B"} << subtasks_5::b;
-    Desctiption{L"Подзадание C"} << subtasks_5::c;
-    Desctiption{L"Подзадание D"} << subtasks_5::d;
+    Desctiption{"Подзадание A"} << subtasks_5::a;
+    Desctiption{"Подзадание B"} << subtasks_5::b;
+    Desctiption{"Подзадание C"} << subtasks_5::c;
+    Desctiption{"Подзадание D"} << subtasks_5::d;
 }

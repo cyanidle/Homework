@@ -18,29 +18,25 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
 
-inline int wc_collate(wchar_t a, wchar_t b) {
-    return wcscoll((wchar_t[2]){a, 0}, (wchar_t[2]){b, 0});
-}
-
 template<typename T>
-void get_input(T& val, const wchar_t* query)
+void get_input(T& val, const char* query)
 {
-    std::wcout << L"Введите ['" << query << L"'] ==> ";
-    std::wcin >> val;
-    if (std::wcin.bad()) {
+    std::cout << "Введите ['" << query << "'] ==> ";
+    std::cin >> val;
+    if (std::cin.bad()) {
         throw std::runtime_error("Введено некорретное значение.");
     }
 }
 
 template<typename T>
-T get_input(const wchar_t* query) {
+T get_input(const char* query) {
     T value;
     get_input(value, query);
     return value;
 }
 
 template<typename T, typename Validate>
-T get_input(const wchar_t* query, Validate validate) {
+T get_input(const char* query, Validate validate) {
     auto value = get_input<T>(query);
     validate(value);
     return value;
@@ -49,41 +45,41 @@ T get_input(const wchar_t* query, Validate validate) {
 template<typename T>
 inline void populate_array(T* arr, size_t size)
 {
-    std::wcout << L"Введите ['Элементов массива: (L"<< size<<")'] ==> ";
+    std::cout << "Введите ['Элементов массива: ("<< size<<")'] ==> ";
     for (size_t i = 0; i < size; ++i) {
-        std::wcin >> arr[i];
+        std::cin >> arr[i];
     }
 }
 
 template<typename T, size_t N>
 size_t populate_array(T (&arr)[N])
 {
-    auto count = get_input<size_t>(L"Количество элементов массива");
+    auto count = get_input<size_t>("Количество элементов массива");
     if (count >= N) {
         throw std::runtime_error(
-            L"Количество ["+std::to_wstring(count)+L"] превышает максимальное ["+std::to_wstring(N)+L']');
+            "Количество ["+std::to_string(count)+"] превышает максимальное ["+std::to_string(N)+']');
     }
     populate_array(arr, count);
     return count;
 }
 
 template<typename T>
-void print(const wchar_t* desc, T&& data) {
-    std::wcout << desc << L": " << data << std::endl;
+void print(const char* desc, T&& data) {
+    std::cout << desc << ": " << data << std::endl;
 }
 
 template<typename T>
 void print(T&& data) {
-    std::wcout << data << std::endl;
+    std::cout << data << std::endl;
 }
 
 template<typename T>
 void print_array(const T* arr, size_t size) {
-    std::wcout << L"[ ";
+    std::cout << "[ ";
     for (unsigned i = 0; i < size; ++i) {
-        std::wcout << arr[i] << L", ";
+        std::cout << arr[i] << ", ";
     }
-    std::wcout << L"]" << std::endl;
+    std::cout << "]" << std::endl;
 }
 
 template<typename Int, Int Min, Int Max>
@@ -93,13 +89,13 @@ struct ValidateRange {
             return;
         } else {
             throw std::runtime_error(
-                "Число выходит за диапазон: ["+std::to_wstring(Min)+" - "+std::to_wstring(Max)+']');
+                "Число выходит за диапазон: ["+std::to_string(Min)+" - "+std::to_string(Max)+']');
         }
     }
 };
 
 struct Desctiption {
-    std::wstring desc;
+    std::string desc;
     bool confirm = true;
     Desctiption& Confirm(bool state) {
         confirm = state;
@@ -107,12 +103,12 @@ struct Desctiption {
     }
     template<typename Func>
     void operator<<(Func&& func) {
-        std::wcout << L"=======" << std::endl;
-        std::wcout << desc << std::endl;
+        std::cout << "=======" << std::endl;
+        std::cout << desc << std::endl;
         if (confirm) {
-            std::wcout << L"Приступить? [Y/n]: " << std::flush;
-            wchar_t ok;
-            std::wcin >> ok;
+            std::cout << "Приступить? [Y/n]: " << std::flush;
+            char ok;
+            std::cin >> ok;
             if (ok != 'Y' && ok != 'y') {
                 return;
             }
@@ -122,9 +118,9 @@ struct Desctiption {
                 func();
                 break;
             } catch (std::exception& exc) {
-                std::wcout << L"Условия задачи не соблюдены. Причина: " << exc.what();
-                std::wcout << L"Заново." << std::endl;
-                std::wcout << L"=======" << std::endl;
+                std::cout << "Условия задачи не соблюдены. Причина: " << exc.what();
+                std::cout << "Заново." << std::endl;
+                std::cout << "=======" << std::endl;
             }
         }
     }
