@@ -5,8 +5,12 @@ namespace mat_ops
 
 struct Matrix
 {
-    int** mat;
-    int n;
+    int** mat = nullptr;
+    int n = 0;
+    int m = n;
+    int lowerDim() const {
+        return n < m ? n : m;
+    }
 };
 
 using Unary = bool(int);

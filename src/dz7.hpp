@@ -24,7 +24,11 @@ void DZ_7()
         }
     }
     if (diagonalsAreBiggest) {
-        auto replaced = mat_ops::replace_if(mat, [](int val){return val == 0;}, diagonalsMult);
+        auto replaced = mat_ops::replace_if(
+            mat,
+            [](int val){return val == 0;},
+            diagonalsMult
+        );
         print("Подменено нулей: ", replaced);
     }
     for (auto i = 0; i < n; ++i) {
