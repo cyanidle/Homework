@@ -1,5 +1,8 @@
 #pragma once
 #include "common.hpp"
+#include "predicates.hpp"
+#include <istream>
+#include <sstream>
 
 namespace subtasks_6
 {
@@ -7,13 +10,15 @@ namespace subtasks_6
 using Word = char[40];
 
 auto matches = [](char* word){
-    auto checkSubrange = [](char* start) {
-        return start[0] < start[1]
-               && start[1] < start[2];
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
+    auto wide = cvt.from_bytes(word);
+    std::transform(wide.begin(), wide.end(), wide.begin(), ::tolower);
+    auto checkSubrange = [](wchar_t* start) {
+        return start[0] <= start[1] && start[1] <= start[2];
     };
-    auto len = strlen(word);
-    for (size_t i = 0; i < len - 3; ++i){
-        if (checkSubrange(word + i)) {
+    auto len = wide.size();
+    for (size_t i = 0; i < len - 2; ++i){
+        if (checkSubrange(wide.data() + i)) {
             return true;
         }
     }
@@ -27,7 +32,7 @@ void a()
     char out_filename[50];
     get_input(in_filename, "Имя входного файла");
     get_input(out_filename, "Имя выходного файла");
-    std::ifstream in(in_filename);
+    auto in = open<std::ifstream>(in_filename);
     Word storage[MAX];
     char* words[MAX];
     for (size_t i = 0; i < MAX; ++i) {
@@ -55,7 +60,7 @@ void a()
                     }
                 }
             } else {
-                // keep data always sorted. then search for bigger length can be binary
+                // TODO: keep data always sorted. then search for bigger length can be binary
                 strncpy(*end++, current, sizeof(Word));
             }
         }
@@ -64,16 +69,73 @@ void a()
         std::sort(words, end, [](char* lhs, char* rhs){
             return strlen(lhs) < strlen(rhs);
         });
-        std::wofstream out(out_filename);
+        auto out = open<std::ofstream>(out_filename);
+        print("Найдено слов: ", end - words);
         for(auto* iter = words; iter != end; ++iter) {
-            out << iter << '\n';
+            out << *iter << '\n';
         }
     }
 }
 
 void b()
 {
-
+    using namespace std;
+    char line[200];
+    cout << "Введите ['Строка с русским тесктом']: ";
+    cin.getline(line, sizeof(line));
+    auto wide = ToWide(line);
+    wide.c_str();
+    wchar_t* words[30] = {};
+    size_t wordsCount = 0;
+    wchar_t** end;
+    { //count and populate
+        for (auto i = 0u; i < wide.size(); ++i) {
+            if (wide[i] == L' ') {
+                wide[i] = '\0';
+                words[wordsCount++] = wide.data() + i;
+            }
+        }
+        end = words + wordsCount;
+    }
+    bool hasDuplicates = false;
+    for (auto i = words; i != end && !hasDuplicates; ++i) {
+        if (i == end - 1) break;
+        for (auto j = i + 1; i != end && !hasDuplicates; ++j) {
+            if (wcscmp(*i, *j) == 0) {
+                hasDuplicates = true;
+            }
+        }
+    }
+    if (hasDuplicates) {
+        print("Есть дупликаты");
+        for (auto w = words; w != end; ++w) {
+            auto wordLen = wcslen(*w);
+            auto wordEnd = remove_all_if(*w, *w + wordLen, isVowel);
+            *wordEnd = '\0';
+        }
+        print("Слова с удаленными гласными");
+        print_array(words, end - words);
+    } else {
+        print("Нет дупликатов");
+        for (auto w = words; w != end; ++w) {
+            auto wordLen = wcslen(*w);
+            auto vowelsCount = std::count_if(*w, *w + wordLen, isVowel);
+            bool shouldDuplicate = vowelsCount <= 3;
+            if (shouldDuplicate) {
+                auto word = *w;
+                wchar_t ch;
+                while ((ch = *word++)) {
+                    wcout << ch;
+                    if (!isVowel(ch)) {
+                        wcout << ch;
+                    }
+                }
+                wcout << endl;
+            } else {
+                wcout << *w << endl;
+            }
+        }
+    }
 }
 
 void c()

@@ -5,13 +5,14 @@
 #include "dz4.hpp"
 #include "dz5.hpp"
 #include "dz6.hpp"
+#include "dz7.hpp"
 
 using Task = void(*)(void);
-auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4, DZ_5, DZ_6};
+auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4, DZ_5, DZ_6, DZ_7};
 
 int main()
 {
-    std::locale::global(std::locale("ru_RU.cp1251"));
+    setlocale(LC_ALL, "Russian");
     uint16_t task;
     std::cout << "Введите номер домашнего задания [1 - " << tasks.size() << "]: ";
     std::cin >> task;

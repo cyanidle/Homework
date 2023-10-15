@@ -42,8 +42,8 @@ void b()
 
 void c()
 {
-    auto n = get_input<uint16_t>("n", ValidateRange<uint16_t, 1, 100>{});
-    auto m = get_input<uint16_t>("m", ValidateRange<uint16_t, 1, 100>{});
+    auto n = get_input<int>("n (строки)");
+    auto m = get_input<int>("m (столбцы)");
     int mat[101][101];
     std::cout << "Далее необходимо будет ввести строки матрицы." << std::endl;
     auto maxRow = -1;
@@ -81,24 +81,10 @@ bool isEqToCube(unsigned num)
 
 void d()
 {
-    unsigned arr[10'001];
+    unsigned arr[10'000];
     auto end = arr + populate_array(arr);
-    while (true) { //remove_all
-        auto newEnd = std::remove_if(arr, end, isPrime);
-        if (newEnd != end) {
-            end = newEnd;
-        } else {
-            break;
-        }
-    }
-    // duplicate by sliding rest
-    for (auto* iter = arr; iter != end; ++iter) {
-        if (isEqToCube(*iter)) {
-            memmove(iter + 1, iter, std::distance(iter, end) * sizeof(unsigned));
-            end++;
-            iter++;
-        }
-    }
+    end = remove_all_if(arr, end, isPrime);
+    end = duplicate_if(arr, end, std::end(arr), isEqToCube);
     print_array(arr, std::distance(arr, end));
 }
 

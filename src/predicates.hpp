@@ -42,3 +42,30 @@ size_t digitsSum(T num)
     });
     return aggr;
 }
+
+bool isVowel(wchar_t ch)
+{
+    constexpr wchar_t vowels[] = {
+        L"аеояёуыюАЕОУЯИЫЁЮ"
+    };
+    auto end = vowels + ARRAY_SIZE(vowels);
+    return std::find(vowels, end, ch) != end;
+}
+
+template<typename Ch, typename Call>
+void ForEachWord(Ch* arr, Call call)
+{
+    size_t offset = 0;
+    size_t len = 0;
+    Ch ch;
+    while ((ch = *arr++)) {
+        if (ch == ' ') {
+            call(arr + offset, len);
+            offset = len + 1;
+        }
+        len++;
+    }
+    if (len) {
+        call(arr + offset, len);
+    }
+}

@@ -18,6 +18,14 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
 
+template<typename Stream, typename...Args>
+Stream open(Args&&...args) {
+    Stream str;
+    str.exceptions(std::ios::badbit | std::ios::failbit);
+    str.open(std::forward<Args>(args)...);
+    return str;
+}
+
 template<typename T>
 void get_input(T& val, const char* query)
 {
@@ -97,18 +105,25 @@ struct ValidateRange {
 struct Desctiption {
     std::string desc;
     bool confirm = true;
+    bool repeat = true;
     Desctiption& Confirm(bool state) {
         confirm = state;
         return *this;
     }
+    Desctiption& Repeat(bool state) {
+        repeat = state;
+        return *this;
+    }
     template<typename Func>
     void operator<<(Func&& func) {
-        std::cout << "=======" << std::endl;
-        std::cout << desc << std::endl;
+        using namespace std;
+        cout << "=======" << endl;
+        cout << desc << endl;
         if (confirm) {
-            std::cout << "Приступить? [Y/n]: " << std::flush;
+            cout << "Приступить? [Y/n]: " << flush;
+            cin.clear();
             char ok;
-            std::cin >> ok;
+            cin >> ok;
             if (ok != 'Y' && ok != 'y') {
                 return;
             }
@@ -117,12 +132,52 @@ struct Desctiption {
             try {
                 func();
                 break;
-            } catch (std::exception& exc) {
-                std::cout << "Условия задачи не соблюдены. Причина: " << exc.what();
-                std::cout << "Заново." << std::endl;
-                std::cout << "=======" << std::endl;
+            } catch (exception& exc) {
+                cout << "Условия задачи не соблюдены. Причина: " << exc.what();
+                if (!repeat) {
+                    return;
+                }
+                cout << "Заново." << endl;
+                cout << "=======" << endl;
             }
         }
     }
-
 };
+
+std::wstring ToWide(const char* str)
+{
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
+    return cvt.from_bytes(str);
+}
+
+template<typename Iter, typename Unary>
+Iter remove_all_if(Iter begin, Iter end, Unary predicate)
+{
+    while (true) {
+        auto newEnd = std::remove_if(begin, end, std::ref(predicate));
+        if (newEnd == end) {
+            return end;
+        } else {
+            end = newEnd;
+        }
+    }
+}
+
+template<typename Iter, typename Unary>
+Iter duplicate_if(Iter iter, Iter end, Iter maxEnd, Unary predicate)
+{
+    for(;iter != end; ++iter) {
+        if (predicate(*iter)) {
+            if (end == maxEnd) {
+                return end;
+            }
+            for (auto sub = end; sub != iter; --sub) {
+                std::swap(*(sub - 1), *sub);
+            }
+            *iter = *(iter + 1);
+            end++;
+            iter++;
+        }
+    }
+    return end;
+}
