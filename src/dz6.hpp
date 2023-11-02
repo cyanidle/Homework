@@ -138,20 +138,21 @@ void b()
     }
 }
 
-bool wordHasOrdered(size_t count, wchar_t* word)
+bool wordHasOrderedLetters(size_t count, wchar_t* word)
 {
 
 }
 
 void c()
 {
-    std::wifstream in("input.txt");
-    std::wofstream out("output.txt");
+    auto in = open<std::wifstream>("input.txt");
+    auto out = open<std::wofstream>("output.txt");
     wchar_t ch = 0;
     wchar_t currentWord[40];
     size_t wordInd = 0;
     bool lastSpace = true;
-    while((ch = in.rdbuf()->snextc())) {
+    while(!in.eof()) {
+        in >> ch;
         out << ch;
         switch(ch) {
         case L'\t':

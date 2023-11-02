@@ -8,14 +8,14 @@
 #include "dz7.hpp"
 
 using subtask = int;
-using Task = void(*)(int);
+using Task = void(*)(subtask);
 auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4, DZ_5, DZ_6, DZ_7};
 
 int main(int argc, char** argv)
 {
     setlocale(LC_ALL, "Russian");
     int dzNum = AnyHomework;
-    int subTask = AllSubtasks;
+    subtask subTask = AllSubtasks;
     if (argc == 3) {
         dzNum = strtol(argv[1], nullptr, 10);
         subTask = strtol(argv[2], nullptr, 10);
