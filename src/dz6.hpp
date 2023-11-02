@@ -138,15 +138,47 @@ void b()
     }
 }
 
+bool wordHasOrdered(size_t count, wchar_t* word)
+{
+
+}
+
 void c()
 {
+    std::wifstream in("input.txt");
+    std::wofstream out("output.txt");
+    wchar_t ch = 0;
+    wchar_t currentWord[40];
+    size_t wordInd = 0;
+    bool lastSpace = true;
+    while((ch = in.rdbuf()->snextc())) {
+        out << ch;
+        switch(ch) {
+        case L'\t':
+        case L'\n':
+        case L' ' : {
+            if (!lastSpace) {
 
+            }
+        }
+        default: {
+            lastSpace = false;
+            currentWord[wordInd++] = ch;
+        }
+        }
+    }
 }
 }
 
-void DZ_6()
+void DZ_6(int sub)
 {
-    Desctiption{"Подзадание A"} << subtasks_6::a;
-    Desctiption{"Подзадание B"} << subtasks_6::b;
-    Desctiption{"Подзадание C"} << subtasks_6::c;
+    if (sub == AllSubtasks || sub == 0) {
+        Desctiption{"Подзадание A"}.Confirm(sub == AllSubtasks) << subtasks_6::a;
+    }
+    if (sub == AllSubtasks || sub == 1) {
+        Desctiption{"Подзадание B"}.Confirm(sub == AllSubtasks) << subtasks_6::b;
+    }
+    if (sub == AllSubtasks || sub == 2) {
+        Desctiption{"Подзадание C"}.Confirm(sub == AllSubtasks) << subtasks_6::c;
+    }
 }

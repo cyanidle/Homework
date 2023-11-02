@@ -18,6 +18,11 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
 
+enum {
+    AllSubtasks = -1,
+    AnyHomework = -1,
+};
+
 template<typename Stream, typename...Args>
 Stream open(Args&&...args) {
     Stream str;
@@ -114,14 +119,14 @@ struct Desctiption {
         repeat = state;
         return *this;
     }
-    template<typename Func>
-    void operator<<(Func&& func) {
+    template<typename Func, typename...Args>
+    void Call(Func&& func, Args&&...a) {
         using namespace std;
         cout << "=======" << endl;
         cout << desc << endl;
         if (confirm) {
             cout << "Приступить? [Y/n]: " << flush;
-            cin.clear();
+                    cin.clear();
             char ok;
             cin >> ok;
             if (ok != 'Y' && ok != 'y') {
@@ -130,7 +135,7 @@ struct Desctiption {
         }
         while (true) {
             try {
-                func();
+                func(a...);
                 break;
             } catch (exception& exc) {
                 cout << "Условия задачи не соблюдены. Причина: " << exc.what();
@@ -138,9 +143,13 @@ struct Desctiption {
                     return;
                 }
                 cout << "Заново." << endl;
-                cout << "=======" << endl;
+                    cout << "=======" << endl;
             }
         }
+    }
+    template<typename Func>
+    void operator<<(Func&& func) {
+        Call(func);
     }
 };
 

@@ -2,7 +2,7 @@
 #include "common.hpp"
 #include "dz7_funcs/mat_ops.hpp"
 
-void DZ_7()
+void DZ_7(int)
 {
     auto n = get_input<int>("n(строки/столбцы)");
     int storage[101][101];

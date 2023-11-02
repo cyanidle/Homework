@@ -2,9 +2,10 @@
 #include "common.hpp"
 #include "predicates.hpp"
 
-void DZ_4()
+void DZ_4(int sub)
 {
-    Desctiption{"Подзадание A"} << []{
+    if (sub == AllSubtasks || sub == 0)
+    Desctiption{"Подзадание A"}.Confirm(sub == AllSubtasks) << []{
         std::vector<int> numbers;
         auto len = get_input<uint16_t>("Количество чисел.");
         std::cout << "Введите " << len << " чисел через пробел или с новой строки" << std::endl;
@@ -41,7 +42,8 @@ void DZ_4()
         }
 
     };
-    Desctiption{"Подзадание B"} << []{
+    if (sub == AllSubtasks || sub == 1)
+    Desctiption{"Подзадание B"}.Confirm(sub == AllSubtasks) << []{
         auto N = get_input<uint32_t>("Число");
         print("Произведение цифр", digitsMul(N));
     };

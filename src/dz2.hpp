@@ -1,7 +1,7 @@
 #pragma once
 #include "common.hpp"
 
-void DZ_2()
+void DZ_2(int)
 {
     auto number = get_input<uint32_t>("Число");
     auto i = get_input<uint32_t>("Номер бита");

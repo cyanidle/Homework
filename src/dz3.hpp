@@ -3,9 +3,10 @@
 #include "common.hpp"
 
 
-void DZ_3()
+void DZ_3(int sub)
 {
-    Desctiption{"Подзадание A"} << []{
+    if (sub == AllSubtasks || sub == 0)
+    Desctiption{"Подзадание A"}.Confirm(sub == AllSubtasks) << []{
         auto A = get_input<int>("A");
         auto B = get_input<int>("B");
         auto C = get_input<int>("C");
@@ -19,7 +20,8 @@ void DZ_3()
         }
         print("Результат", answer);
     };
-    Desctiption{"Подзадание B"} << []{
+    if (sub == AllSubtasks || sub == 1)
+    Desctiption{"Подзадание B"}.Confirm(sub == AllSubtasks) << []{
         auto N = get_input<int>("Номер месяца");
         switch (N)
         {
@@ -39,7 +41,8 @@ void DZ_3()
             throw std::runtime_error("Введено неправильное число-месяц (Должно быть 0 <= N <= 11)");
         }
     };
-    Desctiption{"Подзадание C"} << []{
+    if (sub == AllSubtasks || sub == 2)
+    Desctiption{"Подзадание C"}.Confirm(sub == AllSubtasks) << []{
         auto x = get_input<int>("Number [1/-1]");
         if (x == 1) {
             print("Positive number");
