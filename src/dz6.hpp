@@ -181,7 +181,7 @@ void c()
 {
     constexpr auto order = 4;
     auto in = ToWide(WholeFile("input.txt").str().c_str());
-    std::wstring out;//open<std::wofstream>("output.txt");
+    std::wstring out;
     wchar_t currentWord[40];
     size_t wordInd = 0;
     for(auto ch: in) {
@@ -197,7 +197,7 @@ void c()
                             for (auto i = 0u; i < order; ++i) {
                                 out += wupper(letters[i]);
                             }
-                            word += order;
+                            word += order - 1;
                         } else {
                             out += *word;
                         }
@@ -218,7 +218,7 @@ void c()
             currentWord[wordInd++] = ch;
         }
     }
-    std::cout << ToUtf8(out.c_str());
+    open<std::ofstream>("output.txt") << ToUtf8(out.c_str());
 }
 }
 
