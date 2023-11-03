@@ -138,48 +138,107 @@ void b()
     }
 }
 
-bool wordHasOrderedLetters(size_t count, wchar_t* word)
+wchar_t wupper(wchar_t ch)
 {
+    constexpr auto upperDiff = L'а' - L'А';
+    return ch >= L'а' ? ch - upperDiff : ch;
+}
 
+wchar_t* getIfOrderedExactly(size_t count, wchar_t* word)
+{
+    auto len = wcslen(word);
+    if (len < count) return nullptr;
+    for (auto i = 0u; i < len - count; ++i) {
+        bool ordered = true;
+        for (auto j = 0u; j < count - 1; ++j) {
+            if (wupper(word[i+j]) > wupper(word[i+j+1])) {
+                ordered = false;
+                break;
+            }
+        }
+        if (ordered) {
+            return word + i;
+        }
+    }
+    return nullptr;
+}
+
+bool isEndOfWord(wchar_t ch)
+{
+    switch(ch) {
+    case L'\t':
+    case L'\n':
+    case L'.':
+    case L',':
+    case L';':
+    case L':':
+    case L' ' : return true;
+    default: return false;
+    }
 }
 
 void c()
 {
-    auto in = open<std::wifstream>("input.txt");
-    auto out = open<std::wofstream>("output.txt");
-    wchar_t ch = 0;
+    constexpr auto order = 4;
+    auto in = ToWide(WholeFile("input.txt").str().c_str());
+    std::wstring out;//open<std::wofstream>("output.txt");
     wchar_t currentWord[40];
     size_t wordInd = 0;
-    bool lastSpace = true;
-    while(!in.eof()) {
-        in >> ch;
-        out << ch;
-        switch(ch) {
-        case L'\t':
-        case L'\n':
-        case L' ' : {
-            if (!lastSpace) {
-
+    for(auto ch: in) {
+        if (isEndOfWord(ch)) {
+            if (wordInd) {
+                currentWord[wordInd] = L'\0';
+                auto letters = getIfOrderedExactly(order, currentWord);
+                if (letters) {
+                    wchar_t ch;
+                    wchar_t* word = currentWord;
+                    while (*word) {
+                        if (word == letters) {
+                            for (auto i = 0u; i < order; ++i) {
+                                out += wupper(letters[i]);
+                            }
+                            word += order;
+                        } else {
+                            out += *word;
+                        }
+                        ++word;
+                    }
+                    out += L"(";
+                    for (auto i = 0u; i < order; ++i) {
+                        out += letters[i];
+                    }
+                    out += L")";
+                } else {
+                    out += currentWord;
+                }
+                wordInd = 0;
             }
-        }
-        default: {
-            lastSpace = false;
+            out += ch;
+        } else {
             currentWord[wordInd++] = ch;
         }
-        }
     }
+    std::cout << ToUtf8(out.c_str());
 }
 }
 
 void DZ_6(int sub)
 {
-    if (sub == AllSubtasks || sub == 0) {
-        Desctiption{"Подзадание A"}.Confirm(sub == AllSubtasks) << subtasks_6::a;
+    bool all = sub == AllSubtasks;
+    bool shouldConfirm = all;
+    if (all || sub == 0) {
+        Desctiption{"Подзадание A"}
+                .Confirm(shouldConfirm)
+                .Call(subtasks_6::a);
     }
-    if (sub == AllSubtasks || sub == 1) {
-        Desctiption{"Подзадание B"}.Confirm(sub == AllSubtasks) << subtasks_6::b;
+    if (all || sub == 1) {
+        Desctiption{"Подзадание B"}
+                .Confirm(shouldConfirm)
+                .Call(subtasks_6::b);
     }
-    if (sub == AllSubtasks || sub == 2) {
-        Desctiption{"Подзадание C"}.Confirm(sub == AllSubtasks) << subtasks_6::c;
+    if (all || sub == 2) {
+        Desctiption{"Подзадание C"}
+                .Confirm(shouldConfirm)
+                .Call(subtasks_6::c);
     }
 }

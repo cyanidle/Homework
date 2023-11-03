@@ -85,7 +85,7 @@ void d()
     auto end = arr + populate_array(arr);
     end = remove_all_if(arr, end, isPrime);
     end = duplicate_if(arr, end, std::end(arr), isEqToCube);
-    print_array(arr, std::distance(arr, end));
+    print_array(arr, end);
 }
 
 }

@@ -15,6 +15,7 @@
 #include <string.h>
 #include <limits>
 #include <fstream>
+#include <sstream>
 
 #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
 
@@ -22,12 +23,16 @@ enum {
     AllSubtasks = -1,
     AnyHomework = -1,
 };
+using subtask = int;
 
-template<typename Stream, typename...Args>
-Stream open(Args&&...args) {
+template<typename Stream, typename Path>
+Stream open(Path&& p) {
     Stream str;
     str.exceptions(std::ios::badbit | std::ios::failbit);
-    str.open(std::forward<Args>(args)...);
+    str.open(p);
+    if (!str.is_open()) {
+        throw std::runtime_error("Невозможно открыть: " + std::string(p));
+    }
     return str;
 }
 
@@ -95,6 +100,15 @@ void print_array(const T* arr, size_t size) {
     std::cout << "]" << std::endl;
 }
 
+template<typename T>
+void print_array(T iter, T end) {
+    std::cout << "[ ";
+    for (; iter != end; ++iter) {
+        std::cout << *iter << ", ";
+    }
+    std::cout << "]" << std::endl;
+}
+
 template<typename Int, Int Min, Int Max>
 struct ValidateRange {
     void operator()(Int i) const {
@@ -123,10 +137,10 @@ struct Desctiption {
     void Call(Func&& func, Args&&...a) {
         using namespace std;
         cout << "=======" << endl;
-        cout << desc << endl;
+        cout << desc << '\n' << endl;
         if (confirm) {
             cout << "Приступить? [Y/n]: " << flush;
-                    cin.clear();
+            cin.clear();
             char ok;
             cin >> ok;
             if (ok != 'Y' && ok != 'y') {
@@ -153,10 +167,25 @@ struct Desctiption {
     }
 };
 
+std::string ToUtf8(const wchar_t* str)
+{
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
+    return cvt.to_bytes(str);
+}
+
 std::wstring ToWide(const char* str)
 {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
     return cvt.from_bytes(str);
+}
+
+template<typename T>
+std::stringstream WholeFile(T&& file)
+{
+    auto in = open<std::ifstream>(file);
+    std::stringstream str;
+    str << in.rdbuf();
+    return str;
 }
 
 template<typename Iter, typename Unary>

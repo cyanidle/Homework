@@ -7,21 +7,21 @@
 #include "dz6.hpp"
 #include "dz7.hpp"
 
-using subtask = int;
 using Task = void(*)(subtask);
 auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4, DZ_5, DZ_6, DZ_7};
 
 int main(int argc, char** argv)
 {
-    setlocale(LC_ALL, "Russian");
+    std::setlocale(LC_ALL, "ru_RU.UTF8");
     int dzNum = AnyHomework;
     subtask subTask = AllSubtasks;
     if (argc == 3) {
-        dzNum = strtol(argv[1], nullptr, 10);
-        subTask = strtol(argv[2], nullptr, 10);
+        dzNum = strtol(argv[1], nullptr, 10) - 1;
+        subTask = strtol(argv[2], nullptr, 10) - 1;
     }
     if (dzNum != AnyHomework) {
         if (dzNum >= 0 && dzNum < tasks.size()) {
+            std::cout << "Домашнее задание " << dzNum + 1 << std::endl;
             tasks[dzNum](subTask);
             return 0;
         } else {
@@ -29,6 +29,7 @@ int main(int argc, char** argv)
         }
     }
     uint16_t task;
+    std::cout << "Если нужно конкретное дз, то можно: " << argv[0] << " <номер дз> <номер подзадания>" << std::endl;
     std::cout << "Введите номер домашнего задания [1 - " << tasks.size() << "]: ";
     std::cin >> task;
     task -= 1;
