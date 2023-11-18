@@ -7,7 +7,7 @@ namespace subtasks_5
 
 void a()
 {
-    unsigned array[10'000];
+    unsigned array[10000];
     auto count = populate_array(array);
     bool has_prime = std::any_of(array, array + count, isPrime);
     if (!has_prime) {
@@ -18,7 +18,7 @@ void a()
 
 void b()
 {
-    unsigned array[1'000];
+    unsigned array[1000];
     auto count = populate_array(array);
     auto predicate = [](unsigned lhs, unsigned rhs){
         auto lSum = digitsSum(lhs);
@@ -81,7 +81,7 @@ bool isEqToCube(unsigned num)
 
 void d()
 {
-    unsigned arr[10'000];
+    unsigned arr[10000];
     auto end = arr + populate_array(arr);
     end = remove_all_if(arr, end, isPrime);
     end = duplicate_if(arr, end, std::end(arr), isEqToCube);

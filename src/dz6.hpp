@@ -13,12 +13,12 @@ auto matches = [](char* word){
     std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
     auto wide = cvt.from_bytes(word);
     std::transform(wide.begin(), wide.end(), wide.begin(), ::tolower);
-    auto checkSubrange = [](wchar_t* start) {
+    auto checkSubrange = [](const wchar_t* start) {
         return start[0] <= start[1] && start[1] <= start[2];
     };
     auto len = wide.size();
     for (size_t i = 0; i < len - 2; ++i){
-        if (checkSubrange(wide.data() + i)) {
+        if (checkSubrange(wide.c_str() + i)) {
             return true;
         }
     }
@@ -92,7 +92,7 @@ void b()
         for (auto i = 0u; i < wide.size(); ++i) {
             if (wide[i] == L' ') {
                 wide[i] = '\0';
-                words[wordsCount++] = wide.data() + i;
+                words[wordsCount++] = &wide[0] + i;
             }
         }
         end = words + wordsCount;
