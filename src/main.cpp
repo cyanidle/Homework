@@ -6,9 +6,10 @@
 #include "dz5.hpp"
 #include "dz6.hpp"
 #include "dz7.hpp"
+#include "dz8.hpp"
 
 using Task = void(*)(subtask);
-auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4, DZ_5, DZ_6, DZ_7};
+auto tasks = std::vector<Task>{DZ_1, DZ_2, DZ_3, DZ_4, DZ_5, DZ_6, DZ_7, DZ_8};
 
 int main(int argc, char** argv)
 {
