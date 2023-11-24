@@ -20,8 +20,9 @@ struct node
 template<typename T>
 struct iter
 {
-    using iterator_type = std::forward_iterator_tag;
+    using iterator_category = std::forward_iterator_tag;
     using value_type = T;
+    using difference_type = std::ptrdiff_t;
     using Node = std::conditional_t<std::is_const<T>::value, const node<T>, node<T>>;
     operator iter<const T>() const {
         return {current};
@@ -47,6 +48,17 @@ struct iter
         auto temp = *this;
         return temp+=steps;
     }
+    template<typename U>
+    void swap(iter<U>& other) {
+        std::swap(current->value, other.current->value);
+    }
+    template<typename U>
+    std::ptrdiff_t operator-(const iter<U>& other) {
+        auto o = other.current;
+        auto c = current;
+        std::ptrdiff_t res = 0;
+        return res;
+    }
     iter& operator+=(size_t steps) {
         while(--steps) {
             ++*this;
@@ -57,10 +69,12 @@ struct iter
         current = current->next;
         return *this;
     }
-    bool operator==(const iter& other) const noexcept {
+    template<typename U>
+    bool operator==(const iter<U>& other) const noexcept {
         return current == other.current;
     }
-    bool operator!=(const iter& other) const noexcept {
+    template<typename U>
+    bool operator!=(const iter<U>& other) const noexcept {
         return current != other.current;
     }
     iter(Node* head) : current(head) {}
@@ -69,8 +83,12 @@ struct iter
     iter& operator=(const iter&) = default;
     iter& operator=(iter&&) = default;
 private:
-    Node* current;
-    friend fwd_list<T>;
+    using non_const = std::remove_const_t<T>;
+    node<non_const>* current;
+    friend iter<const T>;
+    friend struct fwd_list<T>;
+    friend struct fwd_list<const T>;
+    friend struct fwd_list<non_const>;
 };
 
 }
@@ -109,6 +127,19 @@ struct fwd_list
     size_t size() const {
         return std::distance(begin(), end());
     }
+    template<typename Pred = std::less<T>>
+    void bubble_sort(Pred pred = {}) {
+        auto size = this->size();
+        for (auto i = 0u; i < size; ++i) {
+            for (auto j = 0u; j < size - i; ++j) {
+                auto& l = operator[](j);
+                auto& r = operator[](j + 1);
+                if (!pred(l, r)){
+                    std::swap(l, r);
+                }
+            }
+        }
+    }
     iterator erase(const_iterator start, const_iterator end) {
         iterator preStart = begin();
         if (preStart == start) {
@@ -122,6 +153,7 @@ struct fwd_list
         for(;start != end; ++start) {
             delete start.current;
         }
+        return end;
     }
     iterator insert(const_iterator pos, const T& value) {
         return insert(pos, &value, &value + 1);
@@ -134,6 +166,7 @@ struct fwd_list
             pos.current->next->next = wasNext;
             ++pos;
         }
+        return {pos.current};
     }
     fwd_list& append(const T& value) {
         *last() = new Node{value};
@@ -155,6 +188,12 @@ struct fwd_list
         clear();
         insert(begin(), o.begin(), o.end());
         return *this;
+    }
+    T& operator[](size_t idx) {
+        return (begin() + idx).current->value;
+    }
+    const T& operator[](size_t idx) const {
+        return (begin() + idx).current->value;
     }
     ~fwd_list() {
         clear();
