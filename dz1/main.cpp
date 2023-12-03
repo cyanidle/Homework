@@ -1,7 +1,6 @@
-#pragma once
 #include "common.hpp"
 
-void DZ_1(int)
+int main()
 {
     // Площадь пирамиды по основанию и высоте (целые числа 0 < x < 100)
     auto S = get_input<uint16_t>("Площадь основания пирамиды S [0 - 100]");

@@ -1,11 +1,9 @@
-#pragma once
 #include "common.hpp"
 #include "predicates.hpp"
 
-void DZ_4(int sub)
+int main()
 {
-    if (sub == AllSubtasks || sub == 0)
-    Desctiption{"Подзадание A"}.Confirm(sub == AllSubtasks) << []{
+    Desctiption{"Подзадание A"} << []{
         std::vector<int> numbers;
         auto len = get_input<uint16_t>("Количество чисел.");
         std::cout << "Введите " << len << " чисел через пробел или с новой строки" << std::endl;
@@ -42,8 +40,7 @@ void DZ_4(int sub)
         }
 
     };
-    if (sub == AllSubtasks || sub == 1)
-    Desctiption{"Подзадание B"}.Confirm(sub == AllSubtasks) << []{
+    Desctiption{"Подзадание B"} << []{
         auto N = get_input<uint32_t>("Число");
         print("Произведение цифр", digitsMul(N));
     };

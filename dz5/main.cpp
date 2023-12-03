@@ -1,4 +1,3 @@
-#pragma once
 #include "common.hpp"
 #include "predicates.hpp"
 
@@ -89,15 +88,10 @@ void d()
 }
 
 }
-
-void DZ_5(int sub)
+int main()
 {
-    if (sub == AllSubtasks || sub == 0)
-        Desctiption{"Подзадание A"}.Confirm(sub == AllSubtasks) << subtasks_5::a;
-    if (sub == AllSubtasks || sub == 1)
-        Desctiption{"Подзадание B"}.Confirm(sub == AllSubtasks) << subtasks_5::b;
-    if (sub == AllSubtasks || sub == 2)
-        Desctiption{"Подзадание C"}.Confirm(sub == AllSubtasks) << subtasks_5::c;
-    if (sub == AllSubtasks || sub == 3)
-        Desctiption{"Подзадание D"}.Confirm(sub == AllSubtasks) << subtasks_5::d;
+    Desctiption{"Подзадание A"} << subtasks_5::a;
+    Desctiption{"Подзадание B"} << subtasks_5::b;
+    Desctiption{"Подзадание C"} << subtasks_5::c;
+    Desctiption{"Подзадание D"} << subtasks_5::d;
 }

@@ -1,4 +1,3 @@
-#pragma once
 #include "common.hpp"
 #include "predicates.hpp"
 #include <istream>
@@ -222,23 +221,12 @@ void c()
 }
 }
 
-void DZ_6(int sub)
+int main()
 {
-    bool all = sub == AllSubtasks;
-    bool shouldConfirm = all;
-    if (all || sub == 0) {
-        Desctiption{"Подзадание A"}
-                .Confirm(shouldConfirm)
-                .Call(subtasks_6::a);
-    }
-    if (all || sub == 1) {
-        Desctiption{"Подзадание B"}
-                .Confirm(shouldConfirm)
-                .Call(subtasks_6::b);
-    }
-    if (all || sub == 2) {
-        Desctiption{"Подзадание C"}
-                .Confirm(shouldConfirm)
-                .Call(subtasks_6::c);
-    }
+    Desctiption{"Подзадание A"}
+            .Call(subtasks_6::a);
+    Desctiption{"Подзадание B"}
+            .Call(subtasks_6::b);
+    Desctiption{"Подзадание C"}
+            .Call(subtasks_6::c);
 }

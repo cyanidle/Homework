@@ -77,15 +77,16 @@ struct iter
     bool operator!=(const iter<U>& other) const noexcept {
         return current != other.current;
     }
-    iter(Node* head) : current(head) {}
+    using non_const = std::remove_const_t<T>;
+    iter(node<non_const>* head) : current(head) {}
     iter(const iter&) = default;
     iter(iter&&) = default;
     iter& operator=(const iter&) = default;
     iter& operator=(iter&&) = default;
 private:
-    using non_const = std::remove_const_t<T>;
-    node<non_const>* current;
+    mutable node<non_const>* current;
     friend iter<const T>;
+    friend iter<non_const>;
     friend struct fwd_list<T>;
     friend struct fwd_list<const T>;
     friend struct fwd_list<non_const>;
@@ -118,14 +119,20 @@ struct fwd_list
     const_iterator cend() const {
         return {*last()};
     }
-    const_iterator erase(size_t index) {
+    iterator erase(size_t index) {
         return erase(begin()+=index);
     }
-    const_iterator erase(const_iterator iter) {
+    iterator erase(const_iterator iter) {
         return erase(iter, iter+1);
     }
     size_t size() const {
-        return std::distance(begin(), end());
+        size_t res = 0;
+        auto last = &head;
+        while(*last) {
+            last = &(*last)->next;
+            res++;
+        }
+        return res;
     }
     template<typename Pred = std::less<T>>
     void bubble_sort(Pred pred = {}) {
@@ -153,7 +160,7 @@ struct fwd_list
         for(;start != end; ++start) {
             delete start.current;
         }
-        return end;
+        return iterator{end.current};
     }
     iterator insert(const_iterator pos, const T& value) {
         return insert(pos, &value, &value + 1);
@@ -205,20 +212,13 @@ struct fwd_list
         head = nullptr;
     }
 private:
-    Node** last() {
+    Node** last() const {
         auto last = &head;
         while(*last) {
             last = &(*last)->next;
         }
         return last;
     }
-    Node** last() const {
-        auto last = &head;
-        while(*last) {
-            last = &last->next;
-        }
-        return last;
-    }
 
-    Node* head = nullptr;
+    mutable Node* head = nullptr;
 };

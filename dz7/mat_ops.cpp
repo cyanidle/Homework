@@ -1,4 +1,4 @@
-#include "dz7_funcs/mat_ops.hpp"
+#include "mat_ops.hpp"
 #include <cassert>
 
 int mat_ops::replace_if(Matrix &m, Unary predicate, int with)

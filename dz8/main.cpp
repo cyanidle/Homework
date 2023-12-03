@@ -2,12 +2,6 @@
 #include "containers/fwd_list.hpp"
 #include "predicates.hpp"
 
-struct dtor {
-    ~dtor() {
-        std::cout << "dtor()" << std::endl;
-    }
-};
-
 std::pair<int, int> first_last_digit(int num)
 {
     //123 -> "123" -> {'1' - '0', '3' - '0'} -> {1, 3};
@@ -35,7 +29,7 @@ bool numberHas6and8(int num)
     return hits[6] && hits[8];
 }
 
-void DZ_8(int)
+int main()
 {
     auto list = fwd_list<int>{};
     auto n = get_input<uint>("количество натуральных чисел");
@@ -51,7 +45,13 @@ void DZ_8(int)
         return pLeft.first < pRight.first || pLeft.second < pRight.second;
     });
     if (isSortedFirstOrLast) {
-        list.erase(std::remove_if(list.begin(), list.end(), isOnlyFromOdd), list.end());
+        for (auto it = list.begin(); it != list.end();) {
+            if (isOnlyFromOdd(*it)) {
+                it = list.erase(it);
+            } else {
+                ++it;
+            }
+        }
         for (auto it = list.begin(); it != list.end();) {
             if (numberHas6and8(*it)) {
                 it = list.insert(it, *it);

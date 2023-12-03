@@ -1,8 +1,7 @@
-#pragma once
 #include "common.hpp"
-#include "dz7_funcs/mat_ops.hpp"
+#include "mat_ops.hpp"
 
-void DZ_7(int)
+int main()
 {
     auto n = get_input<int>("n(строки/столбцы)");
     int storage[101][101];
