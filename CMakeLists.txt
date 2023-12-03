@@ -6,9 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(common INTERFACE)
 target_include_directories(common INTERFACE include)
 
+file(GLOB_RECURSE headers include/*)
+
 function(add_dz dir)
     file(GLOB_RECURSE src ${dir}/*)
-    add_executable(${dir} ${src})
+    add_executable(${dir} ${src} ${headers})
     target_link_libraries(${dir} PRIVATE common)
 endfunction()
 
