@@ -111,13 +111,13 @@ struct fwd_list
         return {head};
     }
     iterator end() {
-        return {*last()};
+        return {nullptr};
     }
     const_iterator end() const {
         return cend();
     }
     const_iterator cend() const {
-        return {*last()};
+        return {nullptr};
     }
     iterator erase(size_t index) {
         return erase(begin()+=index);
@@ -134,14 +134,14 @@ struct fwd_list
         }
         return res;
     }
-    template<typename Pred = std::less<T>>
-    void bubble_sort(Pred pred = {}) {
+    template<typename Comp = std::less<T>>
+    void bubble_sort(Comp comp = {}) {
         auto size = this->size();
         for (auto i = 0u; i < size; ++i) {
-            for (auto j = 0u; j < size - i; ++j) {
+            for (auto j = 0u; j < size - i - 1; ++j) {
                 auto& l = operator[](j);
                 auto& r = operator[](j + 1);
-                if (!pred(l, r)){
+                if (!comp(l, r)){
                     std::swap(l, r);
                 }
             }

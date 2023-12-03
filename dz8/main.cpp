@@ -2,13 +2,6 @@
 #include "containers/fwd_list.hpp"
 #include "predicates.hpp"
 
-std::pair<int, int> first_last_digit(int num)
-{
-    //123 -> "123" -> {'1' - '0', '3' - '0'} -> {1, 3};
-    auto str = std::to_string(num);
-    return {str.front() - '0', str.back() - '0'};
-}
-
 bool isOnlyFromOdd(int num)
 {
     bool res = true;
@@ -22,10 +15,7 @@ bool isOnlyFromOdd(int num)
 
 bool numberHas6and8(int num)
 {
-    bool hits[10] = {0};
-    forEachDigit(num, [&](int dig){
-        hits[dig] = true;
-    });
+    auto hits = digitsCount(num);
     return hits[6] && hits[8];
 }
 

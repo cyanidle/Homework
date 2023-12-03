@@ -19,12 +19,6 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
 
-enum {
-    AllSubtasks = -1,
-    AnyHomework = -1,
-};
-using subtask = int;
-
 template<typename Stream, typename Path>
 Stream open(Path&& p) {
     Stream str;
@@ -125,6 +119,7 @@ struct Desctiption {
     std::string desc;
     bool confirm = true;
     bool repeat = true;
+    int attempts = 3;
     Desctiption& Confirm(bool state) {
         confirm = state;
         return *this;
@@ -147,10 +142,11 @@ struct Desctiption {
                 return;
             }
         }
-        while (true) {
+        auto left = attempts;
+        while (left--) {
             try {
                 func(a...);
-                break;
+                return;
             } catch (exception& exc) {
                 cout << "Условия задачи не соблюдены. Причина: " << exc.what();
                 if (!repeat) {
@@ -160,6 +156,7 @@ struct Desctiption {
                     cout << "=======" << endl;
             }
         }
+        cout << "Попытки закончились!" << endl;
     }
     template<typename Func>
     void operator<<(Func&& func) {

@@ -45,7 +45,7 @@ enum Mode {
 string process(string_view input, int key, Mode mode)
 {
     std::mt19937 engine{uint32_t(key)};
-    std::uniform_int_distribution<char> randomChar(' ', std::numeric_limits<char>::max());
+    std::uniform_int_distribution<char> randomChar{' '};
     std::uniform_int_distribution<uint32_t> shouldScramble(0, 1);
     string result;
     if (mode == mode_encode) {

@@ -1,6 +1,13 @@
 #pragma once
 #include "common.hpp"
 
+std::pair<int, int> first_last_digit(int num)
+{
+    //123 -> "123" -> {'1' - '0', '3' - '0'} -> {1, 3};
+    auto str = std::to_string(num);
+    return {str.front() - '0', str.back() - '0'};
+}
+
 bool isPrime(size_t n)
 {
     if (n <= 1)
@@ -68,4 +75,16 @@ void ForEachWord(Ch* arr, Call call)
     if (len) {
         call(arr + offset, len);
     }
+}
+
+using DigitsCount_t = std::array<uint8_t, 10>;
+
+template<typename Num>
+DigitsCount_t digitsCount(Num num)
+{
+    std::array<uint8_t, 10> hits = {};
+    forEachDigit(num, [&](int dig){
+        hits[dig]++;
+    });
+    return hits;
 }
