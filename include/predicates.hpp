@@ -5,7 +5,7 @@ std::pair<int, int> first_last_digit(int num)
 {
     //123 -> "123" -> {'1' - '0', '3' - '0'} -> {1, 3};
     auto str = std::to_string(num);
-    return {str.front() - '0', str.back() - '0'};
+    return {(num < 0 ? str[1]: str.front()) - '0', str.back() - '0'};
 }
 
 bool isPrime(size_t n)
